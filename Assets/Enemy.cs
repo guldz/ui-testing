@@ -3,7 +3,11 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public GameObject EnemyCounter;
-    
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip yay;
+
+
     void Start()
     {
 
@@ -19,8 +23,10 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            audioSource.PlayOneShot(yay);
             Destroy(gameObject);
             EnemyCounter.GetComponent<EnemyCounter>().UpdateCounter(1);
+          
         }
 
     }
