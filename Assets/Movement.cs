@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.InputSystem;
-using Unity.VisualScripting;
 using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.InputSystem;
 public class Movement : MonoBehaviour
 
 {
@@ -10,7 +11,12 @@ public class Movement : MonoBehaviour
     public float moveSpeed = 5f;
     private Vector2 moveInput;
 
-   
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip yay;
+
+
+
 
     private void Start()
     {
@@ -40,5 +46,17 @@ public class Movement : MonoBehaviour
 
         moveInput = moveInput.normalized;
         isMoving = moveInput != Vector2.zero;
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            audioSource.PlayOneShot(yay);
+           
+
+        }
+
     }
 }

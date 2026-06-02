@@ -1,29 +1,39 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
-public class timer : MonoBehaviour
+public class Timer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI timerText;
-    [SerializeField] float remainingTime;
+    [SerializeField] float remainingTime = 60f;
+
+    private bool gameOver = false;
+
     void Update()
     {
-       // if (remainingTime > 0)
-       // {
-          // remainingTime -= Time.deltaTime;
-      // }
-        if (remainingTime < 0)
+        if (gameOver)
+            return;
+
+        remainingTime -= Time.deltaTime;
+
+        if (remainingTime <= 0)
         {
             remainingTime = 0;
+            gameOver = true;
 
-            SceneManager.LoadScene("Game over");
+            StartCoroutine(GameOverDelay());
         }
 
-            remainingTime -= Time.deltaTime;
         int minutes = Mathf.FloorToInt(remainingTime / 60);
         int seconds = Mathf.FloorToInt(remainingTime % 60);
+
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    //if time 0 switch to loose screen, when collected all enemies switch to win screen
+    IEnumerator GameOverDelay()
+    {
+        yield return new WaitForSeconds(10f);
+        SceneManager.LoadScene("Game over");
+    }
 }
